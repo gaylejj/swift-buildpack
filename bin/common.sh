@@ -42,3 +42,7 @@ export_env_dir() {
     done
   fi
 }
+
+topic() {
+  echo "-----> $*"
+}
