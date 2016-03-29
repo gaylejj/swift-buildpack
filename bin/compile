@@ -33,7 +33,7 @@ status "Installing Clang..."
 apt-get $APT_OPTIONS update
 apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libicu-dev | indent
 apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libblocksruntime-dev | indent
-#apt-get $APT_OPTIONS -y --force-yes -d install --reinstall automake | indent
+apt-get $APT_OPTIONS -y --force-yes -d install --reinstall automake autoconf | indent
 status "DEB files..."
 mkdir -p $BUILD_DIR/.apt
 
