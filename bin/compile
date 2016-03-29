@@ -57,6 +57,14 @@ CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
+
+#TESTING
+status "Adding libdispatch binaries support"
+tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
+ls -la $SWIFT_PATH/usr/lib/swift
+#export LD_LIBRARY_PATH='$SWIFT_PATH/usr/lib/swift'
+#TESTING
+
 cd $BUILD_DIR
 status "Building Package"
 #swift build --configuration release | indent
