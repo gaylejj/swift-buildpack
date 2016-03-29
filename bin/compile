@@ -33,6 +33,7 @@ status "Installing Clang..."
 apt-get $APT_OPTIONS update
 apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libicu-dev | indent
 apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libblocksruntime-dev | indent
+apt-get $APT_OPTIONS -y --force-yes -d install --reinstall automake | indent
 status "DEB files..."
 mkdir -p $BUILD_DIR/.apt
 
@@ -111,9 +112,14 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 #TESTING
 status "Adding libdispatch binaries support"
-tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
-ls -la $SWIFT_PATH/usr/lib/swift
+#tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
+#ls -la $SWIFT_PATH/usr/lib/swift
 #export LD_LIBRARY_PATH='$SWIFT_PATH/usr/lib/swift'
+#TESTING
+
+#TESTING
+git clone https://github.com/apple/swift-corelibs-libdispatch.git
+cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure --with-swift-toolchain=$SWIFT_PATH/usr --prefix=$SWIFT_PATH/usr && make && make install
 #TESTING
 
 cd $BUILD_DIR
