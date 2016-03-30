@@ -22,6 +22,51 @@ source $compile_buildpack_dir/bin/common.sh
 
 
 #TESTING
+APT_CACHE_DIR="$CACHE_DIR/apt/cache"
+APT_STATE_DIR="$CACHE_DIR/apt/state"
+
+mkdir -p "$APT_CACHE_DIR/archives/partial"
+mkdir -p "$APT_STATE_DIR/lists/partial"
+
+APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
+status "Installing Clang..."
+apt-get $APT_OPTIONS update
+apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libicu-dev | indent
+apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libblocksruntime-dev | indent
+apt-get $APT_OPTIONS -y --force-yes -d install --reinstall automake autoconf | indent
+apt-get $APT_OPTIONS -y --force-yes -d install --reinstall autoconf | indent
+status "DEB files..."
+mkdir -p $BUILD_DIR/.apt
+
+ls -la "$APT_CACHE_DIR/archives"
+
+for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
+  topic "Installing $(basename $DEB)"
+  dpkg -x $DEB $BUILD_DIR/.apt/
+done
+
+topic "Writing profile script"
+mkdir -p $BUILD_DIR/.profile.d
+cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
+export PATH="\$HOME/.apt/usr/bin:\$PATH"
+export LD_LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LD_LIBRARY_PATH"
+export LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LIBRARY_PATH"
+export INCLUDE_PATH="\$HOME/.apt/usr/include:\$INCLUDE_PATH"
+export CPATH="\$INCLUDE_PATH"
+export CPPPATH="\$INCLUDE_PATH"
+export PKG_CONFIG_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/pkgconfig:\$PKG_CONFIG_PATH"
+EOF
+
+export PATH="$BUILD_DIR/.apt/usr/bin:$PATH"
+export LD_LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LIBRARY_PATH"
+export INCLUDE_PATH="$BUILD_DIR/.apt/usr/include:$INCLUDE_PATH"
+export CPATH="$INCLUDE_PATH"
+export CPPPATH="$INCLUDE_PATH"
+export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+#give environment to later buildpacks
+export | grep -E -e ' (PATH|LD_LIBRARY_PATH|LIBRARY_PATH|INCLUDE_PATH|CPATH|CPPPATH|PKG_CONFIG_PATH)='  > "$LP_DIR/export"
 #TESTING
 
 
@@ -69,18 +114,19 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 status "Adding libdispatch binaries support"
 tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
 ls -la $SWIFT_PATH/usr/lib/swift
-mkdir -p $BUILD_DIR/vendor
-tar xzf $BUILDPACK_PATH/vendor/blocksruntime.tar.gz -C $BUILD_DIR/vendor
-tar xzf $BUILDPACK_PATH/vendor/libicu.tar.gz -C $BUILD_DIR/vendor
-ls -la $BUILD_DIR/vendor
-export LD_LIBRARY_PATH="$SWIFT_PATH/usr/lib/swift/linux:$BUILD_DIR/vendor:$LD_LIBRARY_PATH"
+#mkdir -p $BUILD_DIR/vendor
+#tar xzf $BUILDPACK_PATH/vendor/blocksruntime.tar.gz -C $BUILD_DIR/vendor
+#tar xzf $BUILDPACK_PATH/vendor/libicu.tar.gz -C $BUILD_DIR/vendor
+#ls -la $BUILD_DIR/vendor
+#export LD_LIBRARY_PATH="$SWIFT_PATH/usr/lib/swift/linux:$BUILD_DIR/vendor:$LD_LIBRARY_PATH"
+#export LD_LIBRARY_PATH="$SWIFT_PATH/usr/lib/swift/linux"
 status "echoiing..."
 echo $LD_LIBRARY_PATH
 #TESTING
 
 #TESTING
-#git clone https://github.com/apple/swift-corelibs-libdispatch.git
-#cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure --with-swift-toolchain=$SWIFT_PATH/usr --prefix=$SWIFT_PATH/usr && make && make install
+git clone https://github.com/apple/swift-corelibs-libdispatch.git
+cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure --with-swift-toolchain=$SWIFT_PATH/usr --prefix=$SWIFT_PATH/usr && make && make install
 #TESTING
 
 cd $BUILD_DIR
