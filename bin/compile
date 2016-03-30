@@ -33,8 +33,7 @@ status "Installing Clang..."
 apt-get $APT_OPTIONS update
 #apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libicu-dev | indent
 #apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libblocksruntime-dev | indent
-apt-get $APT_OPTIONS -y --force-yes -d install --reinstall git build-essential automake clang libicu-dev autoconf libtool libkqueue-dev libkqueue0 libdispatch-dev libdispatch0 libhttp-parser-dev libcurl4-openssl-dev libhiredis-dev libbsd-dev | indent
-
+#apt-get $APT_OPTIONS -y --force-yes -d install --reinstall git build-essential automake clang libicu-dev autoconf libtool libkqueue-dev libkqueue0 libdispatch-dev libdispatch0 libhttp-parser-dev libcurl4-openssl-dev libhiredis-dev libbsd-dev | indent
 #apt-get $APT_OPTIONS -y --force-yes -d install --reinstall automake autoconf | indent
 #apt-get $APT_OPTIONS -y --force-yes -d install --reinstall autoconf | indent
 status "DEB files..."
@@ -118,10 +117,12 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 status "Adding libdispatch binaries support"
 tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
 ls -la $SWIFT_PATH/usr/lib/swift
+
+mkdir -p $BUILD_DIR/.build/release
 #mkdir -p $BUILD_DIR/vendor
-#tar xzf $BUILDPACK_PATH/vendor/blocksruntime.tar.gz -C $BUILD_DIR/vendor
-#tar xzf $BUILDPACK_PATH/vendor/libicu.tar.gz -C $BUILD_DIR/vendor
-#ls -la $BUILD_DIR/vendor
+tar xzf $BUILDPACK_PATH/vendor/blocksruntime.tar.gz -C $BUILD_DIR/.build/release
+tar xzf $BUILDPACK_PATH/vendor/libicu.tar.gz -C $BUILD_DIR/.build/release
+ls -la $BUILD_DIR/.build/release
 #export LD_LIBRARY_PATH="$SWIFT_PATH/usr/lib/swift/linux:$BUILD_DIR/vendor:$LD_LIBRARY_PATH"
 #export LD_LIBRARY_PATH="$SWIFT_PATH/usr/lib/swift/linux"
 status "echoing..."
