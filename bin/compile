@@ -69,6 +69,7 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 status "Adding libdispatch binaries support"
 tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
 ls -la $SWIFT_PATH/usr/lib/swift
+mkdir -p $BUILD_DIR/vendor
 tar xzf $BUILDPACK_PATH/vendor/blocksruntime.tar.gz -C $BUILD_DIR/vendor
 tar xzf $BUILDPACK_PATH/vendor/libicu.tar.gz -C $BUILD_DIR/vendor
 ls -la $BUILD_DIR/vendor
