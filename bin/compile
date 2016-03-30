@@ -112,8 +112,8 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 #TESTING
 status "Adding libdispatch binaries support"
-tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
-ls -la $SWIFT_PATH/usr/lib/swift
+#tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
+#ls -la $SWIFT_PATH/usr/lib/swift
 #mkdir -p $BUILD_DIR/vendor
 #tar xzf $BUILDPACK_PATH/vendor/blocksruntime.tar.gz -C $BUILD_DIR/vendor
 #tar xzf $BUILDPACK_PATH/vendor/libicu.tar.gz -C $BUILD_DIR/vendor
@@ -125,8 +125,8 @@ echo $LD_LIBRARY_PATH
 #TESTING
 
 #TESTING
-git clone https://github.com/apple/swift-corelibs-libdispatch.git
-cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure --with-swift-toolchain=$SWIFT_PATH/usr --prefix=$SWIFT_PATH/usr && make && make install
+#git clone https://github.com/apple/swift-corelibs-libdispatch.git
+#cd swift-corelibs-libdispatch && git submodule init && git submodule update && sh ./autogen.sh && ./configure --with-swift-toolchain=$SWIFT_PATH/usr --prefix=$SWIFT_PATH/usr && make && make install
 #TESTING
 
 cd $BUILD_DIR
