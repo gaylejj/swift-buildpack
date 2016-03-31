@@ -115,11 +115,11 @@ CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 #TESTING
-#status "Adding libdispatch binaries support"
-#tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
+status "Adding libdispatch binaries support"
+tar xzf $BUILDPACK_PATH/vendor/libdispatch.tar.gz -C $SWIFT_PATH
 #ls -la $SWIFT_PATH/usr/lib/swift
 #ls -la $SWIFT_PATH/usr/lib/swift/linux
-#ls -la $SWIFT_PATH/usr/lib/swift/linux/x86_64
+ls -la $SWIFT_PATH/usr/lib/swift/linux/x86_64
 
 #mkdir -p $BUILD_DIR/.build/release
 #mkdir -p $BUILD_DIR/vendor
