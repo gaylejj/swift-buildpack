@@ -124,6 +124,7 @@ mkdir -p $BUILD_DIR/.build/release
 #mkdir -p $BUILD_DIR/vendor
 tar xzf $BUILDPACK_PATH/vendor/blocksruntime.tar.gz -C $BUILD_DIR/.build/release
 tar xzf $BUILDPACK_PATH/vendor/libicu.tar.gz -C $BUILD_DIR/.build/release
+tar xzf $BUILDPACK_PATH/vendor/libkqueue.tar.gz -C $BUILD_DIR/.build/release
 ls -la $BUILD_DIR/.build/release
 #export LD_LIBRARY_PATH="$SWIFT_PATH/usr/lib/swift/linux:$BUILD_DIR/vendor:$LD_LIBRARY_PATH"
 #export LD_LIBRARY_PATH="$SWIFT_PATH/usr/lib/swift/linux"
