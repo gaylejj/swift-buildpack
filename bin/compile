@@ -142,7 +142,9 @@ cd $BUILD_DIR
 status "Building Package"
 #swift build --configuration release | indent
 #swift build -v -Xcc -fblocks --configuration release | indent
-swift build --configuration release -Xcc -fblocks -Xcc -I$INCLUDE_PATH -Xlinker -$LD_LIBRARY_PATH
+#swift build --configuration release -Xcc -fblocks -Xcc -I$INCLUDE_PATH -Xlinker -$LD_LIBRARY_PATH
+#swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -rpath,$BUILD_DIR/.apt/usr/lib | indent
+swift build --configuration release -Xcc -fblocks -Xlinker -L$BUILD_DIR/.build/release | indent
 
 # These should be statically linked, seems a swift bug
 status "Copying dynamic libraries"
